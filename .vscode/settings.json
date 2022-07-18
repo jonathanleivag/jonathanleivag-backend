@@ -1,0 +1,24 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "numso.prettier-standard-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "numso.prettier-standard-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+  },
+   "[jsonc]" : {
+    "editor.defaultFormatter" : "vscode.json-language-features",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+  },
+   "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
+}
