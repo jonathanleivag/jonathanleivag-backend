@@ -9,7 +9,7 @@ import {
   portafolioMostrarValidation
 } from '../validations'
 
-interface IResPortafolio extends IResp {
+export interface IResPortafolio extends IResp {
   portafolio?: IPortafolio | IPortafolio[]
 }
 

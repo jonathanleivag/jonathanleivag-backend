@@ -1,24 +1,12 @@
 import { AxiosError } from 'axios'
 import { expect } from 'chai'
-import { before } from 'mocha'
 
 import { IResRole } from '../../src/controllers'
-import database from '../../src/database'
 import { IRole, RoleModel } from '../../src/models'
-import server from '../../src/server'
 import axiosUrl from '../axiosConfig'
-
-before(done => {
-  server()
-  database({ done })
-})
 
 describe('roleController', () => {
   let id: string = ''
-
-  it('Eliminar todo los datos', async () => {
-    await RoleModel.deleteMany({})
-  })
 
   it('createRole', async () => {
     const data = await axiosUrl.post<IResRole>('/role/create', {
