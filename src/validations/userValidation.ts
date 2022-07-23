@@ -23,7 +23,10 @@ export const createUserValidation: yup.SchemaOf<IUser> = yup.object().shape({
     .email('El email no es válido')
     .required('El email es requerido'),
   role: yup.string().required('El rol es requerido'),
-  password: yup.string().required('La contraseña es requerida'),
+  password: yup
+    .string()
+    .required('La contraseña es requerida')
+    .min(8, 'La contraseña debe tener al menos 8 caracteres'),
   passwordConfirmation: yup
     .string()
     .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
