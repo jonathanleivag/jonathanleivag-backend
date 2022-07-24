@@ -143,6 +143,30 @@ describe('categoryController', () => {
   })
 
   /* -------------------------------------------------------------------------- */
+  /*                               delete category                              */
+  /* -------------------------------------------------------------------------- */
+
+  it('Eliminar una categoría', async () => {
+    const data = await axiosUrl.delete<IResCategory>(`/category/${id}`)
+    expect(data.status).equal(200)
+    expect(data.data.status).equal('success')
+    expect(data.data.message).equal('Categoría eliminada correctamente')
+  })
+
+  it('error en eliminar una categoría', async () => {
+    try {
+      await axiosUrl.delete<IResCategory>(`/category/${id}`)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const data = error.response!.data as IResCategory
+        expect(error.response!.status).equal(400)
+        expect(data.status).equal('error')
+        expect(data.message).equal('Categoría no encontrada')
+      }
+    }
+  })
+
+  /* -------------------------------------------------------------------------- */
   /*                          Eliminar todos los datos                          */
   /* -------------------------------------------------------------------------- */
 

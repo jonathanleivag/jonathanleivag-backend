@@ -124,3 +124,34 @@ export const updateCategory = async (
     }
   }
 }
+
+export const deleteCategory = async (
+  req: Request<{ id: string }>,
+  res: Response<IResCategory>
+) => {
+  try {
+    idValidUtil(req.params.id)
+
+    const category = await CategoryModel.findById(req.params.id)
+
+    if (!category) {
+      throw new Error('Categoría no encontrada')
+    }
+
+    const deleteCategory = await CategoryModel.findByIdAndDelete(req.params.id)
+
+    if (!deleteCategory) {
+      throw new Error('Categoría no eliminada')
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Categoría eliminada correctamente',
+      category: deleteCategory
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ status: 'error', message: error.message })
+    }
+  }
+}

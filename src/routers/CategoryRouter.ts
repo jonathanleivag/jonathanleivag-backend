@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import {
   crearCategory,
+  deleteCategory,
   getCategoryAll,
   getCategoryById,
   updateCategory
@@ -13,5 +14,6 @@ router.post('/', crearCategory)
 router.get('/', getCategoryAll)
 router.get('/:id', getCategoryById)
 router.put('/:id', updateCategory)
+router.delete('/:id', deleteCategory)
 
 module.exports = router
