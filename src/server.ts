@@ -26,6 +26,7 @@ const server = ({ done }: IDoneMocha = { done: undefined }) => {
   app.use('/api/portafolio', require('./routers/PortafolioRouter'))
   app.use('/api/role', require('./routers/RoleRouter'))
   app.use('/api/user', require('./routers/UserRouter'))
+  app.use('/api/category', require('./routers/CategoryRouter'))
 
   /* --------------------------------- server --------------------------------- */
   app.listen(PORT, () => {
