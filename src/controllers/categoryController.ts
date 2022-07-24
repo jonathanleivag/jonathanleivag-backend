@@ -88,6 +88,7 @@ export const updateCategory = async (
 ) => {
   try {
     idValidUtil(req.params.id)
+    await validationUtil(categoryCreateValidation, req.body)
 
     const category = await CategoryModel.findById(req.params.id)
 
