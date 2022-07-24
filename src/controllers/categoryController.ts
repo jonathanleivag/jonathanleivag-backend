@@ -38,3 +38,22 @@ export const crearCategory = async (
     }
   }
 }
+
+export const getCategoryAll = async (
+  req: Request,
+  res: Response<IResCategory>
+) => {
+  try {
+    const categories = await CategoryModel.find()
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Categorías obtenidas correctamente',
+      category: categories
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ status: 'error', message: error.message })
+    }
+  }
+}

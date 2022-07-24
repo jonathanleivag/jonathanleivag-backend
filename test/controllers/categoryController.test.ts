@@ -81,7 +81,25 @@ describe('categoryController', () => {
     }
   })
 
+  it('Mostrar todas las categorias', async () => {
+    const data = await axiosUrl.get<IResCategory>('/category/')
+    expect(data.status).equal(200)
+    expect(data.data.status).equal('success')
+    const categories = data.data.category as ICategory[]
+    expect(categories.length).equal(1)
+    expect(categories[0].category).equal('Categoria 1')
+    expect(categories[0].description).equal('Descripción de la categoria 1')
+  })
+
   it('eliminar datos cateogría', async () => {
     await CategoryModel.deleteMany({})
+  })
+
+  it('Mostrar 0 categorias', async () => {
+    const data = await axiosUrl.get<IResCategory>('/category/')
+    expect(data.status).equal(200)
+    expect(data.data.status).equal('success')
+    const categories = data.data.category as ICategory[]
+    expect(categories.length).equal(0)
   })
 })
