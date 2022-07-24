@@ -81,6 +81,10 @@ describe('categoryController', () => {
     }
   })
 
+  /* -------------------------------------------------------------------------- */
+  /*                        Mostrar todas las categorías                        */
+  /* -------------------------------------------------------------------------- */
+
   it('Mostrar todas las categorias', async () => {
     const data = await axiosUrl.get<IResCategory>('/category/')
     expect(data.status).equal(200)
