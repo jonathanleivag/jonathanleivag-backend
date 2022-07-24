@@ -101,6 +101,10 @@ describe('categoryController', () => {
     expect(categories[0].description).equal('Descripción de la categoria 1')
   })
 
+  /* -------------------------------------------------------------------------- */
+  /*                           mostrar una cartegoria                           */
+  /* -------------------------------------------------------------------------- */
+
   it('Mostrar una categoría', async () => {
     const data = await axiosUrl.get<IResCategory>(`/category/${id}`)
     expect(data.status).equal(200)
@@ -110,6 +114,38 @@ describe('categoryController', () => {
     expect(category.description).equal('Descripción de la categoria 1')
   })
 
+  /* -------------------------------------------------------------------------- */
+  /*                               update category                              */
+  /* -------------------------------------------------------------------------- */
+
+  it('Actualizar una categoría', async () => {
+    const category0 = { ...category, category: 'Categoria 2' }
+    const data = await axiosUrl.put<IResCategory>(`/category/${id}`, category0)
+    expect(data.status).equal(200)
+    expect(data.data.status).equal('success')
+    expect(data.data.message).equal('Categoría actualizada correctamente')
+  })
+
+  it('error en actualizar una categoría', async () => {
+    const category0 = { ...category, category: 'Categoria 3' }
+    await axiosUrl.post<IResCategory>('/category', category0)
+    try {
+      await axiosUrl.put<IResCategory>(`/category/${id}`, category0)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const data = error.response!.data as IResCategory
+
+        expect(error.response!.status).equal(400)
+        expect(data.status).equal('error')
+        expect(data.message).equal('La categoría ya existe')
+      }
+    }
+  })
+
+  /* -------------------------------------------------------------------------- */
+  /*                          Eliminar todos los datos                          */
+  /* -------------------------------------------------------------------------- */
+
   it('eliminar datos cateogría', async () => {
     await CategoryModel.deleteMany({})
   })
@@ -117,6 +153,20 @@ describe('categoryController', () => {
   it('error de categoría no existente', async () => {
     try {
       await axiosUrl.get<IResCategory>(`/category/${id}`)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const data = error.response!.data as IResCategory
+
+        expect(error.response!.status).equal(400)
+        expect(data.status).equal('error')
+        expect(data.message).equal('Categoría no encontrada')
+      }
+    }
+  })
+
+  it('error al actualizar categoría no existente', async () => {
+    try {
+      await axiosUrl.put<IResCategory>(`/category/${id}`, category)
     } catch (error) {
       if (error instanceof AxiosError) {
         const data = error.response!.data as IResCategory

@@ -81,3 +81,46 @@ export const getCategoryById = async (
     }
   }
 }
+
+export const updateCategory = async (
+  req: Request<{ id: string }, {}, ICategory>,
+  res: Response<IResCategory>
+) => {
+  try {
+    idValidUtil(req.params.id)
+
+    const category = await CategoryModel.findById(req.params.id)
+
+    if (!category) {
+      throw new Error('Categoría no encontrada')
+    }
+
+    const category0 = await CategoryModel.findOne({
+      category: req.body.category
+    })
+
+    if (category0 && category0.id !== req.params.id) {
+      throw new Error('La categoría ya existe')
+    }
+
+    const newCategory = await CategoryModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    )
+
+    if (!newCategory) {
+      throw new Error('Categoría no actuliazada')
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Categoría actualizada correctamente',
+      category: newCategory
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ status: 'error', message: error.message })
+    }
+  }
+}
