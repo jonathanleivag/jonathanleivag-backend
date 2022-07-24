@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 import { IResp } from '../interfaces'
 import { CategoryModel, ICategory } from '../models'
-import { validationUtil } from '../utils'
+import { idValidUtil, validationUtil } from '../utils'
 import { categoryCreateValidation } from '../validations'
 
 export interface IResCategory extends IResp {
@@ -50,6 +50,30 @@ export const getCategoryAll = async (
       status: 'success',
       message: 'Categorías obtenidas correctamente',
       category: categories
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ status: 'error', message: error.message })
+    }
+  }
+}
+
+export const getCategoryById = async (
+  req: Request<{ id: string }>,
+  res: Response<IResCategory>
+) => {
+  try {
+    idValidUtil(req.params.id)
+    const category = await CategoryModel.findById(req.params.id)
+
+    if (!category) {
+      throw new Error('Categoría no encontrada')
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Categoría obtenida correctamente',
+      category
     })
   } catch (error) {
     if (error instanceof Error) {

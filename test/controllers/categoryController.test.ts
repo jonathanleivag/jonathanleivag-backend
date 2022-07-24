@@ -10,6 +10,8 @@ const category: ICategory = {
   description: 'Descripción de la categoria 1'
 }
 
+let id: string = ''
+
 describe('categoryController', () => {
   /* -------------------------------------------------------------------------- */
   /*                               crear categoría                              */
@@ -63,6 +65,10 @@ describe('categoryController', () => {
 
   it('crear categoría', async () => {
     const data = await axiosUrl.post<IResCategory>('/category', category)
+
+    const categoryData = data.data.category as ICategory
+    id = categoryData.id!
+
     expect(data.status).equal(201)
     expect(data.data.status).equal('success')
     expect(data.data.message).equal('Categoría creada correctamente')
@@ -95,8 +101,31 @@ describe('categoryController', () => {
     expect(categories[0].description).equal('Descripción de la categoria 1')
   })
 
+  it('Mostrar una categoría', async () => {
+    const data = await axiosUrl.get<IResCategory>(`/category/${id}`)
+    expect(data.status).equal(200)
+    expect(data.data.status).equal('success')
+    const category = data.data.category as ICategory
+    expect(category.category).equal('Categoria 1')
+    expect(category.description).equal('Descripción de la categoria 1')
+  })
+
   it('eliminar datos cateogría', async () => {
     await CategoryModel.deleteMany({})
+  })
+
+  it('error de categoría no existente', async () => {
+    try {
+      await axiosUrl.get<IResCategory>(`/category/${id}`)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const data = error.response!.data as IResCategory
+
+        expect(error.response!.status).equal(400)
+        expect(data.status).equal('error')
+        expect(data.message).equal('Categoría no encontrada')
+      }
+    }
   })
 
   it('Mostrar 0 categorias', async () => {
